@@ -24,6 +24,13 @@ JIRA_DEFAULT_TASK_TYPE=${JIRA_DEFAULT_TASK_TYPE-"Task"}
 
 # ================ INTERNAL HELPERS =============== #
 
+_jira_get_issue_field() {
+	local field_name=$1
+	local issue_id=$2
+
+	jira issue list -q "ID = ${issue_id}" --plain --no-headers --columns "${field_name}" | grep -o "[^$(echo -e \\t)]\+$"
+}
+
 # resolve a the requested epic issue by the user's epic map
 _jira_get_epic_id() {
 	local git_remote=$(__git_prompt_git config --get remote.origin.url)
@@ -36,7 +43,7 @@ _jira_get_epic_id() {
 
 # get the current type of a jira issue
 _jira_get_epic_type() {
-	jira issue list -q "ID = $1" --plain --no-headers --columns "TYPE" | grep -o "[^$(echo -e \\t)]\+$"
+	_jira_get_issue_field "TYPE" $1
 }
 
 # resolve what type of issue to create fo a specific epic type
@@ -155,7 +162,7 @@ function jji {
 	if [ -n "$JIRA_ISSUE_COMPONENT" ]; then JIRA_ISSUE_CREATE_PARAMS+=("-C${JIRA_ISSUE_COMPONENT}"); fi
 	if [[ "${JIRA_AUTO_ASSIGN}" != "EMPTY" ]]; then JIRA_ISSUE_CREATE_PARAMS+=("-a${JIRA_AUTO_ASSIGN}"); fi
 
-	local JIRA_ISSUE_SUMMARY_TEXT="$(jira issue view $JiraIssueId --plain | sed -n '4p' | sed 's/  # //g' | xargs)"
+	local JIRA_ISSUE_SUMMARY_TEXT=$(_jira_get_issue_field "SUMMARY" $JiraIssueId)
 
 	local JIRA_ISSUE_SUMMARY=$(echo "$JIRA_ISSUE_SUMMARY_TEXT" | tr -dc '[:alnum:] ' | tr '[:upper:]' '[:lower:]' | tr -s ' ' | sed 's/ /-/g')
 
