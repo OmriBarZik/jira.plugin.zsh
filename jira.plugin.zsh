@@ -19,7 +19,7 @@ JIRA_ISSUE_COMPONENT=${JIRA_ISSUE_COMPONENT}
 JIRA_ISSUE_DONE_STATUS=${JIRA_ISSUE_DONE_STATUS-"Completed"}
 JIRA_AUTO_STATUS=${JIRA_AUTO_STATUS-"In Progress"}
 JIRA_AUTO_ASSIGN=${JIRA_AUTO_ASSIGN-"currentUser()"}
-JIRA_ISSUE_FILTER=${JIRA_ISSUE_FILTER-"status = \"TO DO\" AND (assignee = currentUser() OR reporter = currentUser())"}
+JIRA_ISSUE_FILTER=${JIRA_ISSUE_FILTER-"status != \"Done\" AND (assignee = currentUser() OR reporter = currentUser())"}
 JIRA_DEFAULT_TASK_TYPE=${JIRA_DEFAULT_TASK_TYPE-"Task"}
 
 # ================ INTERNAL HELPERS =============== #
