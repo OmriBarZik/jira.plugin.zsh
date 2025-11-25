@@ -30,7 +30,7 @@ omz reload
 ## Update
 
 ```bash
-git -C ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/jira pull origin master
+git -C ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/jira pull origin main
 ```
 
 ## Aliases
