@@ -29,6 +29,20 @@ _jira_get_issue_field() {
 	local issue_id=$2
 
 	jira issue list -q "ID = ${issue_id}" --plain --no-headers --columns "${field_name}" | grep -o "[^$(echo -e \\t)]\+$"
+	
+}
+
+_jira_get_summery_by_id() {
+	local issue_id=$1
+
+	if command -v jq >/dev/null 2>&1; then
+		# better and more reliable way if jq is installed
+		jira issue view --comments 0 --raw "${issue_id}" | jq '.fields.summary' -r
+	else
+		# fallback if jq is not installed
+		jira issue view --comments 0 --raw "${issue_id}" | grep -oE "\"summary\":\"(.*?)\"" | sed -E 's/"summary":"(.*)"/\1/'
+	fi
+
 }
 
 # resolve a the requested epic issue by the user's epic map
@@ -162,7 +176,7 @@ function jji {
 	if [ -n "$JIRA_ISSUE_COMPONENT" ]; then JIRA_ISSUE_CREATE_PARAMS+=("-C${JIRA_ISSUE_COMPONENT}"); fi
 	if [[ "${JIRA_AUTO_ASSIGN}" != "EMPTY" ]]; then JIRA_ISSUE_CREATE_PARAMS+=("-a${JIRA_AUTO_ASSIGN}"); fi
 
-	local JIRA_ISSUE_SUMMARY_TEXT=$(_jira_get_issue_field "SUMMARY" $JiraIssueId)
+	local JIRA_ISSUE_SUMMARY_TEXT=$(_jira_get_summery_by_id $JiraIssueId)
 
 	local JIRA_ISSUE_SUMMARY=$(echo "$JIRA_ISSUE_SUMMARY_TEXT" | tr -dc '[:alnum:] ' | tr '[:upper:]' '[:lower:]' | tr -s ' ' | sed 's/ /-/g')
 
