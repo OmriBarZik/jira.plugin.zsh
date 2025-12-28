@@ -183,4 +183,8 @@ function jji {
 	git checkout -b "$1-$JIRA_ISSUE_SUMMARY" $(git_main_branch)
 
 	print -s "git commit -m \"$JIRA_ISSUE_SUMMARY_TEXT\""
+
+	if [[ "${JIRA_AUTO_STATUS}" != "EMPTY" ]]; then
+		jira issue move "$JIRA_ISSUE_ID" "${JIRA_AUTO_STATUS}"
+	fi
 }
