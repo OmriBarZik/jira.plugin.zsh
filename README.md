@@ -5,7 +5,7 @@ This plugin purpose is to make sure to DON'T need to use the web interface of Ji
 ## Pre-Requirements
 
 - [Oh My zsh](https://ohmyz.sh/#install)
-- [Jira CLI](https://github.com/ankitpokhrel/jira-cli) installed and configured
+- [Jira CLI](https://github.com/ankitpokhrel/jira-cli) configured [(How to install)](https://github.com/ankitpokhrel/jira-cli/wiki/Installation)
 
 ## Installation
 
