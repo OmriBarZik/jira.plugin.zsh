@@ -185,6 +185,6 @@ function jji {
 	print -s "git commit -m \"$JIRA_ISSUE_SUMMARY_TEXT\""
 
 	if [[ "${JIRA_AUTO_STATUS}" != "EMPTY" ]]; then
-		jira issue move "$JIRA_ISSUE_ID" "${JIRA_AUTO_STATUS}"
+		jira issue move "$JiraIssueId" "${JIRA_AUTO_STATUS}"
 	fi
 }
